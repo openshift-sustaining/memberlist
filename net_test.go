@@ -907,3 +907,60 @@ func TestHandleCommand(t *testing.T) {
 	m.handleCommand(nil, &net.TCPAddr{Port: 12345}, time.Now())
 	require.Contains(t, buf.String(), "missing message type byte")
 }
+
+func TestReadRemoteState_Limits(t *testing.T) {
+
+	mockNet := &MockNetwork{}
+	tr := mockNet.NewTransport("node")
+	logs := &bytes.Buffer{}
+	logger := log.New(logs, "", 0)
+
+	m := GetMemberlist(t, func(c *Config) {
+		c.EnableCompression = false
+		c.Logger = logger
+		c.Transport = tr
+		c.BindAddr = "127.0.0.1"
+		c.BindPort = 1
+	})
+	defer m.Shutdown()
+
+	addr := joinHostPort(m.config.BindAddr, uint16(m.config.BindPort))
+
+	t.Run("nodes", func(t *testing.T) {
+		msg := pushPullHeader{Nodes: 10000000, UserStateLen: 100, Join: false}
+		buf, err := encode(pushPullMsg, msg)
+		require.NoError(t, err)
+
+		conn, err := tr.DialTimeout(addr, time.Millisecond*100)
+		require.NoError(t, err)
+
+		err = m.rawSendMsgStream(conn, buf.Bytes(), "")
+		require.NoError(t, err)
+
+		// conn closed: get nothing back
+		var out []byte
+		_, err = conn.Read(out)
+		require.Error(t, err, "EOF")
+		require.Contains(t, logs.String(),
+			"number of nodes in header (10000000) exceeds limit")
+	})
+
+	t.Run("user_state", func(t *testing.T) {
+		msg := pushPullHeader{Nodes: 0, UserStateLen: 30000000, Join: false}
+		buf, err := encode(pushPullMsg, msg)
+		require.NoError(t, err)
+
+		conn, err := tr.DialTimeout(addr, time.Millisecond*100)
+		require.NoError(t, err)
+
+		err = m.rawSendMsgStream(conn, buf.Bytes(), "")
+		require.NoError(t, err)
+
+		// conn closed: get nothing back
+		var out []byte
+		_, err = conn.Read(out)
+		require.Error(t, err, "EOF")
+		require.Contains(t, logs.String(),
+			"user state length (30000000) exceeds limit")
+	})
+}
