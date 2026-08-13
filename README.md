@@ -1,3 +1,10 @@
+Fork
+
+Tag.  			Go Version
+v0.5.4-sec.1    1.24.0
+v0.5.1-sec.1    1.22.0
+
+
 # memberlist [![GoDoc](https://godoc.org/github.com/hashicorp/memberlist?status.png)](https://godoc.org/github.com/hashicorp/memberlist)
 memberlist is a [Go](http://www.golang.org) library that manages cluster
 membership and member failure detection using a gossip based protocol.
