@@ -13,6 +13,19 @@ v0.5.0-sec.1<br />
 Based on tag v0.5.0 plus fix for CVE-2026-14362<br />
 From go 1.12
 
+v0.3.1-sec.1<br />
+Based on tag v0.3.1 plus fix for CVE-2026-14362<br />
+From go 1.12
+
+#### Note on creating tag v0.3.1-sec.1<br />
+git checkout -b release-v0.3.1-sec v0.3.1<br />
+git cherry-pick 371698b4dc493ecf2fc94c4383c75b2c9358f6c9<br />
+fix conflicts for this version (conflicts were in net_test.go only)<br />
+git cherry-pick --continue<br />
+git tag v0.3.1-sec.1<br />
+git push --set-upstream origin release-v0.3.1-sec<br />
+git push origin v0.3.1-sec.1<br />
+
 # memberlist [![GoDoc](https://godoc.org/github.com/hashicorp/memberlist?status.png)](https://godoc.org/github.com/hashicorp/memberlist)
 memberlist is a [Go](http://www.golang.org) library that manages cluster
 membership and member failure detection using a gossip based protocol.
