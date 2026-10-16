@@ -1,10 +1,17 @@
 Fork
 
-Tag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go Version <br />
-v0.5.4-sec.1    &nbsp;&nbsp;1.24.0 <br />
-v0.5.1-sec.1    &nbsp;&nbsp;1.22.0 <br />
-v0.5.0-sec.1    &nbsp;&nbsp;1.17 to 1.22.0 <br />
+## New Tags on this forked version<br />
+v0.5.4-sec.1 <br />
+Based on tag v0.5.4 plus fix for CVE-2026-14362<br />
+From go 1.24
 
+v0.5.1-sec.1<br />
+Based on tag v0.5.1 plus fix for CVE-2026-14362<br />
+From go 1.20
+
+v0.5.0-sec.1<br />
+Based on tag v0.5.0 plus fix for CVE-2026-14362<br />
+From go 1.12
 
 # memberlist [![GoDoc](https://godoc.org/github.com/hashicorp/memberlist?status.png)](https://godoc.org/github.com/hashicorp/memberlist)
 memberlist is a [Go](http://www.golang.org) library that manages cluster
